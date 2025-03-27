@@ -26,6 +26,8 @@ let courseHeader = [
     "Status"
 ];
 
+let coursesToIgnore = ["H198", "199", "290", "298", "299"];
+
 courseList = parseCourses(root, false);
 fullCourses = parseCourses(root, true);
 
@@ -39,6 +41,7 @@ function parseCourses(root, addAllActivities=true) {
     let courseRows = [];
     let courseTableRows = root.querySelectorAll("div.course-list table tbody tr");
     for(let row of courseTableRows) {
+        let addCourse = true;
         if(row.classList.contains("blue-bar")) {
             //Add the previous accordion item
             //Check ahead, is this a course?
@@ -51,6 +54,10 @@ function parseCourses(root, addAllActivities=true) {
                 let titleArray = titleRegex.exec(titleText);
                 course['department'] = titleArray[1];
                 course['fullCourseNumber'] = titleArray[2];
+                if(coursesToIgnore.includes(course['fullCourseNumber'])) {
+                    console.log('Ignoring ' + course['fullCourseNumber']);
+                    addCourse = false;
+                }
                 course['courseNumber'] = Number(titleArray[2].replace(/[a-zA-Z]/g, ''));
                 course['courseTitle'] = titleArray[3];
                 course['fullCourseTitle'] = titleText;
@@ -120,7 +127,9 @@ function parseCourses(root, addAllActivities=true) {
             if(addAllActivities) {
                 course['allClassActivities'] = classActivities;
             }
-            courses.push(course);
+            if(addCourse) {
+                courses.push(course);
+            }
             courseRows = [];
         }
         else if(!['num-range-comment', 'college-title', 'college-comment', 'white-bar', 'dept-title', 'dept-comment', 'white-bar-thick'].some(className => row.classList.contains(className))) {

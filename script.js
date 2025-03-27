@@ -47,6 +47,7 @@ function makeSummary() {
 
     }
     //TODO: Use document.getElementById to select each table element and update the course count and enrollment totals
+
 }
 
 //TODO: Make the tables in each accordion responsive by hiding progressively more columns as screen size shrinks.
@@ -73,7 +74,7 @@ function makeFilter() {
     let ugradUpperChecked = document.getElementById('ugradUpperCheckbox').checked;
     let mhcidChecked = document.getElementById('mhcidCheckbox').checked;
     let phdChecked = document.getElementById('phdCheckbox').checked;
-    //Instructor names are written in all-caps, so make your search case-insensitive
+    //Instructor names are written in all-caps, so this makes your search case-insensitive.
     let searchText = document.getElementById('search').value.toUpperCase();
     let coursesToSearch = [];
     for(let course of courses_full) {

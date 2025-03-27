@@ -222,22 +222,6 @@ let courses = [
   },
   {
     "department": "IN4MATX",
-    "fullCourseNumber": "H198",
-    "courseNumber": 198,
-    "courseTitle": "HONORS RESEARCH",
-    "fullCourseTitle": "IN4MATX H198 HONORS RESEARCH",
-    "seminarCourse": true
-  },
-  {
-    "department": "IN4MATX",
-    "fullCourseNumber": "199",
-    "courseNumber": 199,
-    "courseTitle": "INDIVIDUAL STUDY",
-    "fullCourseTitle": "IN4MATX 199 INDIVIDUAL STUDY",
-    "seminarCourse": true
-  },
-  {
-    "department": "IN4MATX",
     "fullCourseNumber": "207S",
     "courseNumber": 207,
     "courseTitle": "SEM RESRCH & WRITNG",
@@ -326,29 +310,5 @@ let courses = [
     "maxEnrollment": 44,
     "studentsWaitlisted": 0,
     "primaryInstructor": "KOLKO, J."
-  },
-  {
-    "department": "IN4MATX",
-    "fullCourseNumber": "290",
-    "courseNumber": 290,
-    "courseTitle": "RESEARCH SEMINAR",
-    "fullCourseTitle": "IN4MATX 290 RESEARCH SEMINAR",
-    "seminarCourse": true
-  },
-  {
-    "department": "IN4MATX",
-    "fullCourseNumber": "298",
-    "courseNumber": 298,
-    "courseTitle": "THESIS SUPERVISION",
-    "fullCourseTitle": "IN4MATX 298 THESIS SUPERVISION",
-    "seminarCourse": true
-  },
-  {
-    "department": "IN4MATX",
-    "fullCourseNumber": "299",
-    "courseNumber": 299,
-    "courseTitle": "INDIVIDUAL STUDY",
-    "fullCourseTitle": "IN4MATX 299 INDIVIDUAL STUDY",
-    "seminarCourse": true
   }
 ]
