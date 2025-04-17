@@ -46,8 +46,17 @@ function makeSummary() {
         //TODO: Use if statements to check which category (lower-division, MHCID, etc.) the course falls into, add to the couse count and enrollment totals
 
     }
-    //TODO: Use document.getElementById to select each table element and update the course count and enrollment totals
-
+    //Sets the text content of each ID to the associated enrollment variables
+    document.getElementById("lowerDivisionCount").textContent = lowerDivCount;
+    document.getElementById("upperDivisionCount").textContent = upperDivCount;
+    document.getElementById("mhcidCount").textContent = mhcidCount;
+    document.getElementById("phdCount").textContent = phdCount;
+    document.getElementById("lowerDivisionEnrollment").textContent = lowerDivEnroll;
+    document.getElementById("upperDivisionEnrollment").textContent = upperDivEnroll;
+    document.getElementById("mhcidEnrollment").textContent = mhcidEnroll;
+    document.getElementById("phdEnrollment").textContent = phdEnroll;
+    document.getElementById("totalCount").textContent = lowerDivCount + upperDivCount + mhcidCount + phdCount;
+    document.getElementById("totalEnrollment").textContent = lowerDivEnroll + upperDivEnroll + mhcidEnroll + phdEnroll;
 }
 
 //TODO: Make the tables in each accordion responsive by hiding progressively more columns as screen size shrinks.
