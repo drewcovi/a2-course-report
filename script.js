@@ -12,22 +12,22 @@ function execute() {
 
 //TODO: Update this helper function to indicate whether the passed-in course is an Undergraduate Lower Division Course, based on the course number.
 function isUgradLowerDiv(course) {
-    return true;
+    return course.courseNumber < 100;
 }
 
 //TODO: Update this helper function to indicate whether the passed-in course is an Undergraduate Lower Division Course, based on the course number.
 function isUgradUpperDiv(course) {
-    return true;
+    return course.courseNumber < 200;
 }
 
 //TODO: Update this helper function to indicate whether the passed-in course is an MHCID Course, based on the course number.
 function isMHCID(course) {
-    return true;
+    return course.courseNumber < 290;
 }
 
 //TODO: Update this helper function to indicate whether the passed-in course is a PhD Course, based on the course number.
 function isPhD(course) {
-    return true;
+    return course.courseNumber < 280;
 }
 
 //TODO: Populate the Department Summary table with the number of courses and students in each course category.
@@ -43,8 +43,18 @@ function makeSummary() {
     let phdEnroll = 0;
     //TODO: Loop over each course, count up the number of courses in each category
     for(let course of courses) {
-        //TODO: Use if statements to check which category (lower-division, MHCID, etc.) the course falls into, add to the couse count and enrollment totals
-
+        // TODO: Use if statements to check which category (lower-division, 
+        // MHCID, etc.) the course falls into, add to the couse count and
+        // enrollment totals
+        isUgradLowerDiv(course) ?
+                (lowerDivCount++, lowerDivEnroll+=course.studentsEnrolled)
+            : isUgradUpperDiv(course) ?
+                (upperDivCount++, upperDivEnroll+=course.studentsEnrolled)
+            : isPhD(course) ?
+                (phdCount++, phdEnroll+=course.studentsEnrolled)
+            : isMHCID(course) ?
+                (mhcidCount++, mhcidEnroll+=course.studentsEnrolled)
+            : null;
     }
     //Sets the text content of each ID to the associated enrollment variables
     document.getElementById("lowerDivisionCount").textContent = lowerDivCount;
@@ -64,6 +74,66 @@ function makeSummary() {
 function makeResponsive() {
     //TODO: Loop over each course, get the table containing course time, instructor information, etc.
     //The table may not exist for every course, especially after you implement filtering!
+
+    let smCols = [];
+    let mdCols = [];
+    let lgCols = [];
+
+    // We will use the keys of our first activity object if it exists
+    if(courses_full.length && courses_full[0].allClassActivities.length){
+
+        let keys = Object.keys(courses_full[0].allClassActivities[0]);
+
+        //get sm indexes and build query selector
+        smCols = [
+            'Instructor',
+            'Time',
+            'Place',
+            'Enr'
+        ].map( (col)=>{
+            //determine child index
+            return keys.indexOf(col);
+        }).map( (col)=>{
+            return `th:nth-child(${col+1}), td:nth-child(${col+1})`;
+        }).join(', ');
+
+        //get md indexes and build query selector
+        mdCols = [
+            'Instructor',
+            'Time',
+            'Place',
+            'Enr',
+            'Code',
+            'Type',
+            'Sec',
+            'Units'
+        ].map( (col)=>{
+            //determine child index
+            return keys.indexOf(col);
+        }).map( (col)=>{
+            return `th:nth-child(${col+1}), td:nth-child(${col+1})`;
+        }).join(', ');
+
+        //get lg indexes and build query selector
+        lgCols = [
+            'Instructor',
+            'Time',
+            'Place',
+            'Enr',
+            'Code',
+            'Type',
+            'Sec',
+            'Units',
+            'Final',
+            'Modality'
+        ].map( (col)=>{
+            //determine child index
+            return keys.indexOf(col);
+        }).map( (col)=>{
+            return `th:nth-child(${col+1}), td:nth-child(${col+1})`;
+        }).join(', ');
+    }
+
     for(let course of courses) {
         let tableId = course.department + course.fullCourseNumber + '_table';
         let courseTable = document.getElementById(tableId);
@@ -71,9 +141,33 @@ function makeResponsive() {
             //TODO: For the header row and all of the rows in the body of the table, add CSS classes to hide some of the columns on smaller screens
             //Use "display" properties, using "d-none" to hide on small screens and the appropriate syntax to show on larger screens
             //See https://getbootstrap.com/docs/5.3/utilities/display/
+
+            courseTable
+                .querySelectorAll('th, td')
+                .forEach( el => el.classList.add('d-none','d-xl-block'));
+
+            courseTable
+                .querySelectorAll(smCols)
+                .forEach( (el)=>{
+                    el.classList.remove('d-none')
+                    el.classList.add('d-sm-block')
+                });
+
+            courseTable
+                .querySelectorAll(mdCols)
+                .forEach( (el)=>{
+                    el.classList.add('d-md-block')
+                });
             
+            courseTable
+                .querySelectorAll(lgCols)
+                .forEach( (el)=>{
+                    el.classList.add('d-lg-block')
+                });
+
         }
     }
+
 }
 
 //TODO: Filter the list of courses 
