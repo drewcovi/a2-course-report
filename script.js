@@ -11,23 +11,23 @@ function execute() {
 }
 
 //TODO: Update this helper function to indicate whether the passed-in course is an Undergraduate Lower Division Course, based on the course number.
-function isUgradLowerDiv(course) {
-    return course.courseNumber < 100;
+function isUgradLowerDiv(courseNumber) {
+    return courseNumber < 100;
 }
 
 //TODO: Update this helper function to indicate whether the passed-in course is an Undergraduate Lower Division Course, based on the course number.
-function isUgradUpperDiv(course) {
-    return course.courseNumber < 200;
+function isUgradUpperDiv(courseNumber) {
+    return courseNumber < 200 && courseNumber >100;
 }
 
 //TODO: Update this helper function to indicate whether the passed-in course is an MHCID Course, based on the course number.
-function isMHCID(course) {
-    return course.courseNumber < 290;
+function isMHCID(courseNumber) {
+    return courseNumber < 290 && courseNumber > 280;
 }
 
 //TODO: Update this helper function to indicate whether the passed-in course is a PhD Course, based on the course number.
-function isPhD(course) {
-    return course.courseNumber < 280;
+function isPhD(courseNumber) {
+    return courseNumber < 280 && courseNumber > 200;
 }
 
 //TODO: Populate the Department Summary table with the number of courses and students in each course category.
@@ -46,13 +46,13 @@ function makeSummary() {
         // TODO: Use if statements to check which category (lower-division, 
         // MHCID, etc.) the course falls into, add to the couse count and
         // enrollment totals
-        isUgradLowerDiv(course) ?
+        isUgradLowerDiv(course.courseNumber) ?
                 (lowerDivCount++, lowerDivEnroll+=course.studentsEnrolled)
-            : isUgradUpperDiv(course) ?
+            : isUgradUpperDiv(course.courseNumber) ?
                 (upperDivCount++, upperDivEnroll+=course.studentsEnrolled)
-            : isPhD(course) ?
+            : isPhD(course.courseNumber) ?
                 (phdCount++, phdEnroll+=course.studentsEnrolled)
-            : isMHCID(course) ?
+            : isMHCID(course.courseNumber) ?
                 (mhcidCount++, mhcidEnroll+=course.studentsEnrolled)
             : null;
     }
@@ -182,15 +182,24 @@ function makeFilter() {
     let coursesToSearch = [];
     for(let course of courses_full) {
         //TODO: Use your helper functions to only add a course in each category (lower-division, etc.) if the corresponding checkbox was checked
-
-        //TODO: Check that the instructor's name contains the searched text. The "includes" function might help
-        //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes#examples
-
+        coursesToSearch = courses_full.filter( (course)=>{
+        //    if(course.primaryInstructor)
+            let isChecked =
+                (isUgradLowerDiv(course.courseNumber) && ugradLowerChecked) ||
+                (isUgradUpperDiv(course.courseNumber) && ugradUpperChecked) ||
+                (isMHCID(course.courseNumber) && mhcidChecked) ||
+                (isPhD(course.courseNumber) && phdChecked) ||
+                (!phdChecked && !mhcidChecked && !ugradLowerChecked && !ugradUpperChecked);
+            //TODO: Check that the instructor's name contains the searched text. The "includes" function might help
+            //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes#examples
+            let isInstructor = course.primaryInstructor.toLowerCase().indexOf(searchText.toLowerCase())>=0;
+            return isInstructor && isChecked;
+        });
     }
     //TODO: remove this line after implementing the for loop above
-    coursesToSearch = courses_full;
+    // coursesToSearch = courses_full;
     //TODO: Use document.getElementById to update the span tag with the number of courses
-
+    document.getElementById('numberCourses').textContent = coursesToSearch.length;
     //Re-populates the course accordion with the courses to search for, and make your tables responsive again. No need to modify
     populateCourseAccordion(coursesToSearch);
     makeResponsive();
